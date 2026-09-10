@@ -8,6 +8,7 @@ import WhatIfPanel from "./components/WhatIfPanel";
 import AuditLog from "./components/AuditLog";
 import { LogoMark, Icons } from "./components/brand";
 import { decisionOf } from "./lib/format";
+import avatarUrl from "../assets/logo.jpg";
 
 const TABS = [
   { id: "assessment", label: "Assessment", icon: Icons.assessment },
@@ -120,14 +121,13 @@ export default function App() {
 
         <div className="border-b border-hairline px-5 pb-4 pt-1">
           <div className="flex items-center gap-2.5">
-            <div
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-[12px] font-bold text-brand ring-1 ring-black/10"
-              aria-hidden="true"
-            >
-              AM
-            </div>
+            <img
+              src={avatarUrl}
+              alt="Venkatesh Kashi"
+              className="h-9 w-9 shrink-0 rounded-full bg-brand-50 object-cover ring-1 ring-black/10"
+            />
             <div className="leading-tight">
-              <div className="text-[14px] font-semibold text-ink">Alex Menon</div>
+              <div className="text-[14px] font-semibold text-ink">Venkatesh Kashi</div>
               <div className="text-[11px] text-muted">Credit risk reviewer</div>
             </div>
           </div>

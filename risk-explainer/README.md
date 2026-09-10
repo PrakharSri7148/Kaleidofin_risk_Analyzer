@@ -14,8 +14,9 @@ credit-risk score and the factors behind it, then:
    factors were cited, and whether the answer was a fallback.
 
 This is a portfolio/demo project. It has no user auth (only a basic per-IP rate
-limit on the LLM endpoints). Deployment config — one Render blueprint for the
-API, a static frontend, and Postgres — lives in [`DEPLOYMENT.md`](./DEPLOYMENT.md).
+limit on the LLM endpoints). Deployment config — a single Render service
+(Docker: React build + API on one URL) plus Postgres — lives in
+[`DEPLOYMENT.md`](./DEPLOYMENT.md).
 
 > **Branding note:** the Kaleidofin name and logo (`frontend/assets/`) are used
 > here for a role-specific portfolio demo. Remove or replace them before hosting

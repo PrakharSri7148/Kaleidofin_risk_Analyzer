@@ -1,19 +1,11 @@
 // fetch wrappers for the FastAPI backend.
-// VITE_API_BASE points at the backend. Vite inlines it at BUILD time:
-//   - local dev:  frontend/.env  (http://localhost:8000)
-//   - Render:     wired from the API service by render.yaml as a bare hostname
-// A value with no scheme is assumed to be https (that's what Render provides).
-let BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
-if (!/^https?:\/\//i.test(BASE)) BASE = `https://${BASE}`;
-
-if (import.meta.env.PROD && !import.meta.env.VITE_API_BASE) {
-  // eslint-disable-next-line no-console
-  console.error(
-    "[risk-explainer] VITE_API_BASE was not set for this production build — " +
-      "API calls will go to http://localhost:8000 and fail. Set VITE_API_BASE " +
-      "to your backend URL in the host's environment variables and redeploy."
-  );
-}
+// The deployed build serves frontend + API from one origin, so the base URL is
+// empty ("") and requests are same-origin relative (/borrowers, /explain, …).
+// For local dev the API is a separate origin, so frontend/.env sets
+// VITE_API_BASE=http://localhost:8000. Vite inlines this at build time.
+const BASE =
+  import.meta.env.VITE_API_BASE ??
+  (import.meta.env.DEV ? "http://localhost:8000" : "");
 
 async function request(path, options) {
   const res = await fetch(`${BASE}${path}`, {

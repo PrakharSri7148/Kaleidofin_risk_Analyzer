@@ -1,58 +1,27 @@
-# Render blueprint — deploys the whole app on Render:
-#   risk-explainer-api  : FastAPI web service
-#   risk-explainer-web  : static site (Vite build of frontend/)
-#   risk-explainer-db   : managed Postgres
+# Render blueprint — ONE web service (Docker) serving the React build + the API,
+# plus a managed Postgres. This file must sit at the repo root (it does).
 #
-# This file must sit at the repo root (it does). Deploy:
+# Deploy:
 #   1. Push to GitHub.
 #   2. Render dashboard -> New -> Blueprint -> pick this repo.
-#   3. On the `risk-explainer-api` service -> Environment tab, set GROQ_API_KEY
+#   3. On the `risk-explainer` service -> Environment tab, set GROQ_API_KEY
 #      (a fresh key from https://console.groq.com/keys).
-# VITE_API_BASE and the CORS allowance are wired automatically (see below).
 
 services:
-  # ---------------------------------------------------------------- backend
   - type: web
-    name: risk-explainer-api
-    runtime: python
-    rootDir: risk-explainer/backend
+    name: risk-explainer
+    runtime: docker
+    dockerfilePath: ./risk-explainer/Dockerfile
+    dockerContext: ./risk-explainer
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /borrowers
+    healthCheckPath: /healthz
     envVars:
-      - key: PYTHON_VERSION
-        value: "3.12"
       - key: GROQ_API_KEY
-        sync: false            # secret — type it into the dashboard, not here
+        sync: false            # secret — set it in the dashboard, not here
       - key: DATABASE_URL
         fromDatabase:
           name: risk-explainer-db
           property: connectionString
-      # The static site's origin (*.onrender.com) is allowed automatically by
-      # app/main.py. Only set CORS_ORIGINS if you attach a custom domain:
-      # - key: CORS_ORIGINS
-      #   value: https://your-custom-domain.example
-
-  # --------------------------------------------------------------- frontend
-  - type: web
-    name: risk-explainer-web
-    runtime: static
-    rootDir: risk-explainer/frontend
-    buildCommand: npm ci && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: NODE_VERSION
-        value: "20"
-      - key: VITE_API_BASE
-        fromService:
-          type: web
-          name: risk-explainer-api
-          property: host        # bare hostname; src/api.js prepends https://
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
 
 databases:
   - name: risk-explainer-db
