@@ -1,0 +1,28 @@
+# Root ignore file. Written so it works whether the git repo is initialised
+# here (Kaleidofin_risk_Analyzer/) or one level down in risk-explainer/.
+
+# ─── OS / editor ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# ─── Secrets — never commit real keys; only *.example files are tracked ─
+**/.env
+**/.env.*
+!**/.env.example
+
+# ─── Python (backend) ────────────────────────────────────────────────
+**/.venv/
+**/__pycache__/
+*.pyc
+**/.pytest_cache/
+**/*.db
+
+# ─── Node (frontend) ────────────────────────────────────────────────
+**/node_modules/
+**/dist/
+
+# ─── Vercel ──────────────────────────────────────────────────────────
+.vercel

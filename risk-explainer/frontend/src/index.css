@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-frame text-ink font-sans;
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden; /* the shell never scrolls; only inner panels do */
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-sans font-extrabold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .no-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.14);
+    border-radius: 999px;
+  }
+  .no-scrollbar {
+    scrollbar-width: thin;
+  }
+}
+
+/* The one designed motion: the gauge needle and meter ticks easing to a new
+   reading on a what-if change. Everything else stays still. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
