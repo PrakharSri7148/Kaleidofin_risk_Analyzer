@@ -8,7 +8,7 @@ import WhatIfPanel from "./components/WhatIfPanel";
 import AuditLog from "./components/AuditLog";
 import { LogoMark, Icons } from "./components/brand";
 import { decisionOf } from "./lib/format";
-import avatarUrl from "../assets/logo.jpg";
+import avatarUrl from "../assets/Venkatesh.jpeg";
 
 const TABS = [
   { id: "assessment", label: "Assessment", icon: Icons.assessment },
