@@ -1,4 +1,4 @@
-# Conversational Risk Explainer
+# Kaleidofin Risk Analyser
 
 A working prototype of a credit-risk assistant for lenders: pick a borrower, see their AI-generated risk score and the factors behind it, ask plain-language questions and get answers **grounded in that borrower's own factor data**, simulate what would change the outcome, and review a full audit trail of every question asked.
 
