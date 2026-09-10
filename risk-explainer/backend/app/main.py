@@ -47,14 +47,20 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Conversational Risk Explainer", version="1.0.0", lifespan=lifespan)
 
-# Allow the Vite dev server to call this API. Any localhost/127.0.0.1 port is
-# permitted for local dev (Vite hops ports when one is taken); set CORS_ORIGINS
-# to a comma-separated list to also allow deployed frontend origins.
+# Browser origins allowed to call this API:
+#   - any localhost / 127.0.0.1 port  (local dev; Vite hops ports)
+#   - any *.onrender.com subdomain    (the deployed static site, wired in render.yaml)
+#   - anything listed in CORS_ORIGINS (comma-separated; use for a custom domain)
+# The API has no auth and is rate-limited, so the broad onrender.com allowance is
+# an acceptable trade for zero-config deploys.
 _origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_origins,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origin_regex=(
+        r"https?://(localhost|127\.0\.0\.1)(:\d+)?"
+        r"|https://([a-z0-9-]+\.)*onrender\.com"
+    ),
     allow_methods=["*"],
     allow_headers=["*"],
 )

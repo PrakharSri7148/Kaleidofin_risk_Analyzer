@@ -1,8 +1,10 @@
 // fetch wrappers for the FastAPI backend.
-// Override the base URL with VITE_API_BASE if the backend isn't on :8000.
-// NOTE: Vite inlines this at BUILD time — on Vercel/Netlify set VITE_API_BASE
-// as a project env var, not just in a local .env.
-const BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
+// VITE_API_BASE points at the backend. Vite inlines it at BUILD time:
+//   - local dev:  frontend/.env  (http://localhost:8000)
+//   - Render:     wired from the API service by render.yaml as a bare hostname
+// A value with no scheme is assumed to be https (that's what Render provides).
+let BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
+if (!/^https?:\/\//i.test(BASE)) BASE = `https://${BASE}`;
 
 if (import.meta.env.PROD && !import.meta.env.VITE_API_BASE) {
   // eslint-disable-next-line no-console

@@ -28,7 +28,7 @@ _lock = Lock()
 
 
 def _client_key(request: Request) -> str:
-    """Best-effort caller identity. Behind Vercel/Render the real client IP is
+    """Best-effort caller identity. Behind Render's proxy the real client IP is
     in X-Forwarded-For; fall back to the socket peer."""
     forwarded = request.headers.get("x-forwarded-for")
     if forwarded:
